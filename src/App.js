@@ -1,23 +1,76 @@
-import logo from './logo.svg';
-import './App.css';
-
+import { useState } from "react";
+import allProducts from "./data";
 function App() {
+  const [products, setProducts] = useState(allProducts);
+  console.log(products);
+
+  // delete product
+  const deleteProduct = (id) => {
+    const filteredProduct = products.filter((product) => {
+      return product.id !== id;
+    });
+
+    setProducts(filteredProduct);
+  };
+
+  const filterByBrand = (brand) => {
+    setProducts(allProducts);
+    if (brand == "all") {
+      setProducts(allProducts);
+    } else {
+      const filterBrand = allProducts.filter((product) => {
+        return product.brand == brand;
+      });
+
+      setProducts(filterBrand)
+    }
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className="filter-container">
+        <select onChange={(e) => filterByBrand(e.target.value)} className="select-brand">
+          <option value="all">All</option>;
+          {[...new Set(allProducts.map((product) => {
+            return product.brand;
+          }))].map((brand) => {
+            return (
+              <option key={Math.random() * new Date().getMilliseconds} value={brand}>
+                {brand}
+              </option>
+            )
+          })}
+        </select>
+      </div>
+      <ul className="container">
+        {products.map((product) => {
+          const { id, title, thumbnail, brand, price, rating, description } =
+            product;
+          return (
+            <li key={id}>
+              <img src={thumbnail} alt={description} />
+              <h2>{title}</h2>
+              <h3>
+                <b>Brand :</b> {brand}{" "}
+              </h3>
+              <p>
+                <b>Price: </b>${price}
+              </p>
+              <p>
+                <b>Rating: </b>
+                {rating}
+              </p>
+              <p>
+                <b>Decs: </b>
+                {description}
+              </p>
+              <button onClick={() => deleteProduct(id)} className="del-btn">
+                Delete
+              </button>
+            </li>
+          );
+        })}
+      </ul>
     </div>
   );
 }
