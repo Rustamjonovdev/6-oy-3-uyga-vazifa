@@ -25,6 +25,18 @@ function App() {
       setProducts(filterBrand)
     }
   };
+  const filterByPrice = (price) => {
+    setProducts(allProducts);
+    if (price == "all") {
+      setProducts(allProducts);
+    } else {
+      const filterPrice = allProducts.filter((product) => {
+        return product.price == price;
+      });
+
+      setProducts(filterPrice)
+    }
+  };
 
   return (
     <div>
@@ -37,6 +49,18 @@ function App() {
             return (
               <option key={Math.random() * new Date().getMilliseconds} value={brand}>
                 {brand}
+              </option>
+            )
+          })}
+        </select>
+        <select onChange={(e) => filterByPrice(e.target.value)} className="select-brand">
+          <option value="all">All</option>;
+          {[...new Set(allProducts.map((product) => {
+            return product.price;
+          }))].map((price) => {
+            return (
+              <option key={Math.random() * new Date().getMilliseconds} value={price}>
+                ${price}
               </option>
             )
           })}

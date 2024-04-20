@@ -56,3 +56,9 @@ img {
   align-items: center;
   margin: 10px 500px;
 }
+
+.filter-container{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
